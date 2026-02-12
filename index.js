@@ -16,6 +16,10 @@ const ensureSaraUser = async () => {
     );
 };
 
+app.get('/', (req, res) => {
+    res.send('API activa. Prueba: /api/users');
+});
+
 app.post('/api/users', async (req, res) => {
     const user = await User.create(req.body);
     res.status(201).json(user);
