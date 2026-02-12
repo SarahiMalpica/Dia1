@@ -1,21 +1,23 @@
 const express = require('express');
 const connectDB = require('./db');
+const User = require('./models/User');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
 connectDB();
-
-// Middleware to parse JSON
 app.use(express.json());
 
-// Sample route
-app.get('/', (req, res) => {
-    res.send('Hello, MongoDB!');
+app.post('/api/users', async (req, res) => {
+    const user = await User.create(req.body);
+    res.status(201).json(user);
 });
 
-// start the server
+app.get('/api/users', async (req, res) => {
+    const users = await User.find();
+    res.json(users);
+});
+
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server running on ${PORT}`);
 });
