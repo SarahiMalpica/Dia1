@@ -19,7 +19,7 @@ const ensureSaraUser = async () => {
 app.get('/', async (req, res) => {
     await ensureSaraUser();
     const sara = await User.findOne({ email: 'sara@demo.com' });
-    res.send(`Usuario en BD: ${sara.name} (${sara.email})`);
+    res.send(`Usuario en Base de Datos: ${sara.name} (${sara.email})`);
 });
 
 app.post('/api/users', async (req, res) => {
