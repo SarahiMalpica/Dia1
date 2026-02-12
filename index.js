@@ -16,8 +16,10 @@ const ensureSaraUser = async () => {
     );
 };
 
-app.get('/', (req, res) => {
-    res.send('API activa. Prueba: /api/users');
+app.get('/', async (req, res) => {
+    await ensureSaraUser();
+    const sara = await User.findOne({ email: 'sara@demo.com' });
+    res.send(`Usuario en BD: ${sara.name} (${sara.email})`);
 });
 
 app.post('/api/users', async (req, res) => {
