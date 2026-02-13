@@ -18,13 +18,23 @@
                 nombre: document.getElementById('nombre').value,
                 descripcion: document.getElementById('descripcion').value
             };
-            await fetch('/api/tiposUsuarios', {
+            const response = await fetch('/api/tiposUsuarios', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                alert(errorData.message || errorData.error || 'No se pudo guardar el tipo de usuario');
+                return;
+            }
+
+            alert('Tipo de usuario guardado');
+            document.getElementById('nombre').value = '';
+            document.getElementById('descripcion').value = '';
         }
     </script>
 </body>
