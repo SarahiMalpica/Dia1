@@ -1,6 +1,6 @@
 const express = require('express');
 const connectDB = require('./db');
-const User = require('./models/User');
+const User = require('./models/user');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -8,29 +8,46 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 app.use(express.json());
 
-const ensureSaraUser = async () => {
+const ensureCarlosUser = async () => {
     await User.updateOne(
-        { email: 'sara@demo.com' },
-        { $setOnInsert: { name: 'SARA', email: 'sara@demo.com' } },
+        { email: 'carlos@demo.com' },
+        { $setOnInsert: { name: 'CARLOS', email: 'carlos@demo.com' } },
         { upsert: true }
     );
 };
+app.use(express.json());
 
-app.get('/', async (req, res) => {
-    await ensureSaraUser();
-    const sara = await User.findOne({ email: 'sara@demo.com' });
-    res.send(`Usuario en Base de Datos: ${sara.name} (${sara.email})`);
-});
+app.use(express.static('front-ends'));
+//app.get('/', async (req, res) => {
+   // try {
+     //   await ensureCarlosUser();
+    //    const carlos = await User.findOne({ email: 'carlos@demo.com' });
+     //   res.send(`Usuario: ${carlos.name} (${carlos.email})`);
+  //  } catch (error) {
+    //    res.status(500).json({ msg: 'Error fetching user data' });
+   // }
+//});
 
 app.post('/api/users', async (req, res) => {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
+    try {
+        const user = await User.create(req.body);
+        res.status(201).json(user);
+    } catch (error) {
+        if (error.code === 11000) {
+            return res.status(409).json({ msg: 'Email already exists' });
+        }
+        return res.status(400).json({ msg: 'Invalid user data' });
+    }
 });
 
 app.get('/api/users', async (req, res) => {
-    await ensureSaraUser();
-    const users = await User.find();
-    res.json(users);
+    try {
+        await ensureCarlosUser();
+        const users = await User.find();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ msg: 'Error fetching users' });
+    }
 });
 
 if (!process.env.VERCEL) {

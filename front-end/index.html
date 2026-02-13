@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de usuario</title>
+</head>
+<body>
+    <div>
+        <h2>Crear tipo de usuario</h2>
+        <input type="text" name="nombre" id="nombre" placeholder="Nombre del tipo de usuario">
+        <input type="text" name="descripcion" id="descripcion" placeholder="Descripción del tipo de usuario ">
+        <button onclick="guardar()">Guardar tipo de usuario</button>
+    </div>
+    <script>
+        async function guardar() {
+            const data = {
+                nombre: document.getElementById('nombre').value,
+                descripcion: document.getElementById('descripcion').value
+            };
+            await fetch('/api/tiposUsuarios', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        }
+    </script>
+</body>
+</html>
