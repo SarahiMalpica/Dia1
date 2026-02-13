@@ -8,16 +8,16 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 app.use(express.json());
 
-const ensureCarlosUser = async () => {
+const ensureSaraUser = async () => {
     await User.updateOne(
-        { email: 'carlos@demo.com' },
-        { $setOnInsert: { name: 'CARLOS', email: 'carlos@demo.com' } },
+        { email: 'sara@demo.com' },
+        { $setOnInsert: { name: 'SARA', email: 'sara@demo.com' } },
         { upsert: true }
     );
 };
 app.use(express.json());
 
-app.use(express.static('front-ends'));
+app.use(express.static('public'));
 //app.get('/', async (req, res) => {
    // try {
      //   await ensureCarlosUser();
