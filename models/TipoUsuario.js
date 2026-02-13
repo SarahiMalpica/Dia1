@@ -1,15 +1,17 @@
 const mongoose = require('mongoose');
 
-const TipouUsuarioSchema = new mongoose.Schema({
-    tipo: {
+const TipoUsuarioSchema = new mongoose.Schema({
+    nombre: {
         type: String,
         required: true,
         unique: true,
+        trim: true,
     },
     descripcion: {
         type: String,
         required: true,
+        trim: true,
     },
 });
 
-module.exports = mongoose.model('TipouUsuario', TipouUsuarioSchema);
+module.exports = mongoose.model('TipoUsuario', TipoUsuarioSchema);
